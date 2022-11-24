@@ -88,7 +88,7 @@ const PatientUpdate = () => {
                 >
                     {errMsg}
                 </p>
-                <h1>Update Doctor Profile</h1>
+                <h1>Update Patient Profile</h1>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="username">
                         Username:
