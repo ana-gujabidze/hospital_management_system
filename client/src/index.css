@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-family: 'Nunito', sans-serif;
+	font-size: 22px;
+	color: #fff;
+}
+
+body {
+	min-height: 100vh;
+	background-color: rgb(255, 184, 30);
+}
+
+.App {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 1rem 0.5rem;
+}
+
+section {
+	width: 100%;
+	max-width: 420px;
+	min-height: 400px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	padding: 1rem;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	flex-grow: 1;
+	padding-bottom: 1rem;
+}
+
+input[type='text'],
+input[type='password'],
+button,
+textarea {
+	font-family: 'Nunito', sans-serif;
+	font-size: 22px;
+	padding: 0.25rem;
+	border-radius: 0.5rem;
+}
+
+label,
+button {
+	margin-top: 1rem;
+}
+
+button {
+	padding: 0.5rem;
+}
+
+.instructions {
+	font-size: 0.75rem;
+	border-radius: 0.5rem;
+	background: #000;
+	color: #fff;
+	padding: 0.25rem;
+	position: relative;
+	bottom: -10px;
+}
+
+.instructions > svg {
+	margin-right: 0.25rem;
+}
+
+.offscreen {
+	position: absolute;
+	left: -9999px;
+}
+
+.hide {
+	display: none;
+}
+
+.valid {
+	color: limegreen;
+	margin-left: 0.25rem;
+}
+
+.invalid {
+	color: red;
+	margin-left: 0.25rem;
+}
+
+.errmsg {
+	background-color: lightpink;
+	color: firebrick;
+	font-weight: bold;
+	padding: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.line {
+	display: inline-block;
+}
+
+.dashboard-card-btn{
+  width:100%;
+}
+
+.navbar {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.card-body {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.col {
+  padding-bottom: 15px;
+}
+
+select {
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.table-header {
+	text-align:center;
+	
+}
+
+.card {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.card > * {
+	color: white;
+}
+
+::placeholder {
+	color:white;
+}
+
+a {
+	color: white;
+}
+
+svg {
+	display: inline-block;
+}
+
+img {
+	height: 12rem;
+}
+
+@keyframes spinner {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+  }
+  .loading-spinner {
+	width: 50px;
+	height: 50px;
+	border: 10px solid #f3f3f3; /* Light grey */
+	border-top: 10px solid #383636; /* Black */
+	border-radius: 50%;
+	animation: spinner 1.5s linear infinite;
+}
+
+.about {
+	text-align: center;
+}
+
+/* heading */
+
+.invoice-heading { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
+
+/* table */
+
+.meta { font-size: 75%; table-layout: fixed; width: 100%; }
+table { border-collapse: separate; border-spacing: 2px; }
+.invoice > th, .invoice > td { border-width: 1px; padding: 0.5em; position: relative; text-align: left; }
+.invoice > th, .invoice > td { border-radius: 0.25em; border-style: solid; }
+.invoice > th { background: #EEE; border-color: #BBB; }
+.invoice > td { border-color: #DDD; }
+
+/* header */
+
+.invoice-header { margin: 0 0 3em; }
+.invoice-header:after { clear: both; content: ""; display: table; }
+
+.invoice-header .invoice-heading { background: rgba(0, 0, 0, 0.4); border-radius: 0.25em; color: black; margin: 0 0 1em; padding: 0.5em 0; }
+.invoice-header address { float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
+.invoice-header address p { margin: 0 0 0.25em; }
+.invoice-header span { display: block; float: right; }
+.invoice-header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
+
+/* article */
+
+article, article address, table.meta, table.inventory { margin: 0 0 3em; }
+article:after { clear: both; content: ""; display: table; }
+article .invoice-heading { clip: rect(0 0 0 0); position: absolute; }
+
+article address { float: left; font-size: 125%; font-weight: bold; }
+
+/* table meta & balance */
+
+table.meta, table.balance { float: right; width: 36%; }
+table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
+
+/* table meta */
+
+table.meta th { width: 40%; }
+table.meta td { width: 60%; }
+
+/* table items */
+
+.invoice  th, .invoice  td {border-radius: 0.25rem; text-align: center;}
+.invoice  th {
+	border:solid 2px;
+	background-color: rgba(0, 0, 0, 0.4);
+	font-weight: bold;
+}
+.invoice  td {border:solid 1px; }
+
+
+table.inventory { clear: both; width: 100%; }
+
+/* aside */
+
+aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
+aside h1 { border-color: black; border-bottom-style: solid; }
