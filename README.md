@@ -113,7 +113,9 @@ After super user confirms user status, administrator can have access to admin da
 
 ![admin_dashboard](__screenshots/admin_dashboard.png?raw=true "Admin dashboard")
 
-Administrator can view the list of patients
+Administrator can view the list of patients:
+
+![all_patients](__screenshots/all_patients.gif "List of all patients")
 
 Administrator can update certain fields of patient's profile:
 
