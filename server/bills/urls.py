@@ -1,10 +1,11 @@
+from django.urls import path
+
 from bills.views import (
     AppointmentBillView,
     DownloadBillsCSVView,
     DownloadSpecificPatientBillsCSVView,
     SpecificPatientTotalBillView,
 )
-from django.urls import path
 
 app_name = "bills"
 

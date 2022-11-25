@@ -1,4 +1,5 @@
 from django.urls import path
+
 from multi_user.views import (
     AdministratorRegistrationView,
     CustomAuthToken,

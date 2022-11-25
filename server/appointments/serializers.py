@@ -1,6 +1,7 @@
+from rest_framework import serializers
+
 from appointments.models import Appointment
 from multi_user.models import Doctor, Patient
-from rest_framework import serializers
 
 
 class AppointmentRegistrationSerializer(serializers.ModelSerializer):
@@ -82,15 +83,9 @@ class AppointmentUpdateSerializer(serializers.ModelSerializer):
         appointment = Appointment.objects.get(id=request.data.get("appointment_id"))
 
         appointment.start_time = (
-            request.data.get("start_time", None)
-            if request.data.get("start_time", None)
-            else appointment.start_time
+            request.data.get("start_time", None) if request.data.get("start_time", None) else appointment.start_time
         )
-        appointment.end_time = (
-            request.data.get("end_time")
-            if request.data.get("end_time")
-            else appointment.end_time
-        )
+        appointment.end_time = request.data.get("end_time") if request.data.get("end_time") else appointment.end_time
 
         appointment.save()
 

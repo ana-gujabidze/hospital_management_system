@@ -5,6 +5,12 @@ from django.contrib.auth import logout
 from django.core import serializers
 from django.forms.models import model_to_dict
 from django.http import HttpResponse
+from rest_framework import generics, permissions, status
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from multi_user.models import Doctor, Patient, User
 from multi_user.permissions import ISAdministrator, IsDoctor, IsPatient
 from multi_user.serializers import (
@@ -15,11 +21,6 @@ from multi_user.serializers import (
     PatientUpdateSerializer,
     UserSerializer,
 )
-from rest_framework import generics, permissions, status
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 
 class PatientRegistrationView(generics.GenericAPIView):
@@ -280,9 +281,7 @@ class DownloadPalientCSVView(generics.GenericAPIView):
         return HttpResponse(
             buf.getvalue(),
             content_type="text/csv",
-            headers={
-                "Content-Disposition": 'attachment; filename="all_patients_dataset"'
-            },
+            headers={"Content-Disposition": 'attachment; filename="all_patients_dataset"'},
         )
 
 
@@ -306,7 +305,5 @@ class DownloadDoctorCSVView(generics.GenericAPIView):
         return HttpResponse(
             buf.getvalue(),
             content_type="text/csv",
-            headers={
-                "Content-Disposition": 'attachment; filename="all_doctors_dataset"'
-            },
+            headers={"Content-Disposition": 'attachment; filename="all_doctors_dataset"'},
         )

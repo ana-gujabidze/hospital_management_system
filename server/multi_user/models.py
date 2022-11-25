@@ -29,9 +29,7 @@ class User(AbstractUser):
 
 
 class Patient(models.Model):
-    patient = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True
-    )
+    patient = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     full_name = models.CharField(max_length=64)
     mobile = models.CharField(max_length=100)
     admited_at = models.DateTimeField(default=timezone.now)
@@ -57,9 +55,7 @@ class Doctor(models.Model):
 
 
 class Administrator(models.Model):
-    administrator = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True
-    )
+    administrator = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     full_name = models.CharField(max_length=64)
 
     def __str__(self):

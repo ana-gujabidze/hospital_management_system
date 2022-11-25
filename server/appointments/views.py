@@ -1,18 +1,16 @@
 from io import BytesIO
 
 import pandas as pd
-from appointments.models import Appointment
-from appointments.serializers import (
-    AppointmentRegistrationSerializer,
-    AppointmentUpdateSerializer,
-)
 from django.db.models import F
 from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.shortcuts import render
-from multi_user.permissions import ISAdministrator, IsDoctor, IsPatient
 from rest_framework import generics, permissions
 from rest_framework.response import Response
+
+from appointments.models import Appointment
+from appointments.serializers import AppointmentRegistrationSerializer, AppointmentUpdateSerializer
+from multi_user.permissions import ISAdministrator, IsDoctor, IsPatient
 
 
 # Create your views here.
@@ -136,9 +134,7 @@ class DownloadAppointmentsCSVView(generics.GenericAPIView):
         return HttpResponse(
             buf.getvalue(),
             content_type="text/csv",
-            headers={
-                "Content-Disposition": 'attachment; filename="all_appointments_df"'
-            },
+            headers={"Content-Disposition": 'attachment; filename="all_appointments_df"'},
         )
 
 
@@ -166,9 +162,7 @@ class DownloadSpecificPatientAppointmentsCSVView(generics.GenericAPIView):
         return HttpResponse(
             buf.getvalue(),
             content_type="text/csv",
-            headers={
-                "Content-Disposition": 'attachment; filename="my_appointments_df"'
-            },
+            headers={"Content-Disposition": 'attachment; filename="my_appointments_df"'},
         )
 
 
@@ -196,7 +190,5 @@ class DownloadSpecificDoctorAppointmentsCSVView(generics.GenericAPIView):
         return HttpResponse(
             buf.getvalue(),
             content_type="text/csv",
-            headers={
-                "Content-Disposition": 'attachment; filename="my_appointments_df"'
-            },
+            headers={"Content-Disposition": 'attachment; filename="my_appointments_df"'},
         )

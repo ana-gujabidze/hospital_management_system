@@ -37,18 +37,14 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    re_path(
-        r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
-    ),
+    re_path(r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ]
 
 urlpatterns += [
     path("admin/", admin.site.urls),
     path("", render_file),
     path("api/multi_user/", include("multi_user.urls", namespace="api_multi_user")),
-    path(
-        "api/appointments/", include("appointments.urls", namespace="api_appointment")
-    ),
+    path("api/appointments/", include("appointments.urls", namespace="api_appointment")),
     path("api/bills/", include("bills.urls", namespace="api_bill")),
     re_path("(?!api).*/", render_file),
 ]

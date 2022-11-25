@@ -1,16 +1,17 @@
 from io import BytesIO
 
 import pandas as pd
-from appointments.models import Appointment
-from bills.models import Bill
-from bills.serializers import BillRegistrationSerializer
 from django.db.models import F, Sum
 from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.shortcuts import render
-from multi_user.permissions import ISAdministrator, IsDoctor, IsPatient
 from rest_framework import generics, permissions
 from rest_framework.response import Response
+
+from appointments.models import Appointment
+from bills.models import Bill
+from bills.serializers import BillRegistrationSerializer
+from multi_user.permissions import ISAdministrator, IsDoctor, IsPatient
 
 # Create your views here.
 
@@ -51,10 +52,7 @@ class SpecificPatientTotalBillView(generics.GenericAPIView):
         )
         amount_due = queryset.aggregate(
             s=Sum(
-                F("room_charge")
-                + F("doctor_fee")
-                + F("medicine_cost")
-                + F("other_charge"),
+                F("room_charge") + F("doctor_fee") + F("medicine_cost") + F("other_charge"),
             )
         )["s"]
         queryset_list = list(queryset.values())

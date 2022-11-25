@@ -1,3 +1,5 @@
+from django.urls import path
+
 from appointments.views import (
     AppointmentListView,
     AppointmentRegistrationView,
@@ -9,7 +11,6 @@ from appointments.views import (
     PatientAppointmentListView,
     SpecificAppointmentView,
 )
-from django.urls import path
 
 app_name = "appointments"
 
