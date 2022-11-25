@@ -12,6 +12,7 @@
     "bootstrap": "^4.6.0",
     "dateformat": "^5.0.3",
     "fortawesome": "^0.0.1-security",
+    "js-file-download": "^0.4.12",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",

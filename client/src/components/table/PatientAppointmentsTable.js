@@ -1,7 +1,7 @@
-import { faArrowDown, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faFileInvoiceDollar, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
+import Button from 'react-bootstrap/Button';
 import Container from "react-bootstrap/Container";
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom';
@@ -11,14 +11,14 @@ import LoadingSpinner from "../spinner/LoadingSpinner";
 const fileDownload = require('js-file-download');
 
 
-function AllDoctorsTable() {
+function PatientAppointmentsTable() {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [loadingData, setLoadingData] = useState(true);
 
     async function fetchData() {
         await axios
-            .get("/api/multi_user/doctor_list/", {
+            .get("/api/appointments/patient_appointments_list/" + JSON.parse(localStorage.getItem("user")).id + "/", {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Token ' + localStorage.getItem("authToken"),
@@ -30,7 +30,7 @@ function AllDoctorsTable() {
                 // you tell it that you had the result
                 setLoadingData(false);
             });
-    };
+    }
 
     useEffect(() => {
         if (loadingData) {
@@ -39,34 +39,9 @@ function AllDoctorsTable() {
         }
     }, []);
 
-    async function deleteObject(doctorId) {
-        await axios
-            .delete("/api/multi_user/specific_user/" + doctorId + "/", {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Token ' + localStorage.getItem("authToken"),
-                },
-            })
-            .then((response) => {
-                // check if the data is populated
-                console.log(response.data);
-            });
-    };
-
-    const handleClick = (e, doctorId) => {
-        e.preventDefault();
-        console.log('The link was clicked.');
-        deleteObject(doctorId);
-        window.location.reload();
-    };
-
-    const navigateToConfirmed = (item) => {
-        navigate('/doctor_profile/', { state: item }); // here we will redirect user and send data into state
-    }
-
     async function donwloadCSV() {
         await axios
-            .get("/api/multi_user/download_all_doctors/", {
+            .get("/api/appointments/download_all_appointments/", {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Token ' + localStorage.getItem("authToken"),
@@ -86,33 +61,43 @@ function AllDoctorsTable() {
                 <Table responsive bordered style={{ marginBottom: 0 }} hover striped>
                     <thead>
                         <tr>
-                            <th>Full Name</th>
-                            <th>Mobile</th>
-                            <th>Address</th>
+                            <th>Patient Name</th>
+                            <th>Doctor Name</th>
+                            <th>Hospital</th>
                             <th>Department</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
                             <th>Update</th>
+                            <th>Invoice</th>
                             <th>Delete</th>
-                            <th style={{ display: "none" }}>Doctor ID</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.fullName}</td>
-                                <td>{item.mobile}</td>
-                                <td>{item.address}</td>
+                                <td>{item.patientName}</td>
+                                <td>{item.doctorName}</td>
+                                <td>{item.hospitalName}</td>
                                 <td>{item.department}</td>
-                                <td style={{ display: "none" }}>{item.doctorId}</td>
+                                <td>{item.startTime}</td>
+                                <td>{item.endTime}</td>
                                 <td>
-                                    <a href="/doctor_profile/" onClick={() => navigateToConfirmed(item)}>
+                                    <a href="/appointment_update/" onClick={() => navigateToUpdate(item)}>
                                         <FontAwesomeIcon
                                             icon={faPenToSquare}
                                         /></a>
                                 </td>
-                                <td><a onClick={e => handleClick(e, item.doctorId)}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
+                                <td>
+                                    <a href="/appointment_invoice/" onClick={() => navigateToInvoice(item)}>
+                                        <FontAwesomeIcon
+                                            icon={faFileInvoiceDollar}
+                                        /></a>
+                                </td>
+                                <td><a onClick={e => handleClick(e, item.id)}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
                                     <FontAwesomeIcon
                                         icon={faTrashCan}
-                                    /></a></td>
+                                    /></a>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -124,4 +109,4 @@ function AllDoctorsTable() {
         ));
 }
 
-export default AllDoctorsTable;
+export default PatientAppointmentsTable;

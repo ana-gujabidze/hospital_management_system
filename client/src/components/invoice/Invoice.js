@@ -10,7 +10,6 @@ const SPECIFIC_PATIENT_BILLS = "/api/bills/get/specific_bills/";
 function Invoice() {
     const { state } = useLocation();
     const [data, setData] = useState([]);
-    const [numberOfItems, setNumberOfItems] = useState(0);
     const [amountDue, setAmountDue] = useState(0);
     const [loadingData, setLoadingData] = useState(true);
     const now = new Date().toLocaleDateString();
@@ -27,7 +26,6 @@ function Invoice() {
             .then((response) => {
                 // check if the data is populated
                 setData(response.data.queryset);
-                setNumberOfItems(response.data.numberOfItems);
                 setAmountDue(response.data.amountDue);
                 // you tell it that you had the result
                 setLoadingData(false);

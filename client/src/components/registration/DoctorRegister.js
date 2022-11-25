@@ -266,7 +266,7 @@ const DoctorRegister = () => {
                     <label htmlFor="department">
                         Department:
                     </label>
-                    <select onChange={(e) => setDepartment(e.target.value)} autocomplete="off">
+                    <select onChange={(e) => setDepartment(e.target.value)} autoComplete="off">
                         <option defaultValue disabled>
                             Select Department
                         </option>

@@ -1,10 +1,15 @@
-import { faFileInvoiceDollar, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faFileInvoiceDollar, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from "react";
+import Button from 'react-bootstrap/Button';
+import Container from "react-bootstrap/Container";
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom';
 import axios from "../../axios";
 import LoadingSpinner from "../spinner/LoadingSpinner";
+
+const fileDownload = require('js-file-download');
+
 
 function AllAppointmentsTable() {
     const navigate = useNavigate();
@@ -63,52 +68,73 @@ function AllAppointmentsTable() {
         window.location.reload();
     };
 
+    async function donwloadCSV() {
+        await axios
+            .get("/api/appointments/download_all_appointments/", {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem("authToken"),
+                },
+            })
+            .then((response) => {
+                // check if the data is populated
+                const contentDisposition = response.headers.get('Content-Disposition');
+                const filename = contentDisposition.split('filename=')[1].split(';')[0];
+                fileDownload(response.data, filename + ".csv");
+            });
+    };
+
     return (
         loadingData ? (<LoadingSpinner />) : (
-            <Table responsive bordered style={{ marginBottom: 0 }} hover striped>
-                <thead>
-                    <tr>
-                        <th>Patient Name</th>
-                        <th>Doctor Name</th>
-                        <th>Hospital</th>
-                        <th>Department</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Update</th>
-                        <th>Invoice</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((item, index) => (
-                        <tr key={index}>
-                            <td>{item.patientName}</td>
-                            <td>{item.doctorName}</td>
-                            <td>{item.hospitalName}</td>
-                            <td>{item.department}</td>
-                            <td>{item.startTime}</td>
-                            <td>{item.endTime}</td>
-                            <td>
-                                <a href="/appointment_update/" onClick={() => navigateToUpdate(item)}>
-                                    <FontAwesomeIcon
-                                        icon={faPenToSquare}
-                                    /></a>
-                            </td>
-                            <td>
-                                <a href="/appointment_invoice/" onClick={() => navigateToInvoice(item)}>
-                                    <FontAwesomeIcon
-                                        icon={faFileInvoiceDollar}
-                                    /></a>
-                            </td>
-                            <td><a onClick={e => handleClick(e, item.id)}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
-                                <FontAwesomeIcon
-                                    icon={faTrashCan}
-                                /></a>
-                            </td>
+            <Container>
+                <Table responsive bordered style={{ marginBottom: 0 }} hover striped>
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Doctor Name</th>
+                            <th>Hospital</th>
+                            <th>Department</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Update</th>
+                            <th>Invoice</th>
+                            <th>Delete</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {data.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.patientName}</td>
+                                <td>{item.doctorName}</td>
+                                <td>{item.hospitalName}</td>
+                                <td>{item.department}</td>
+                                <td>{item.startTime}</td>
+                                <td>{item.endTime}</td>
+                                <td>
+                                    <a href="/appointment_update/" onClick={() => navigateToUpdate(item)}>
+                                        <FontAwesomeIcon
+                                            icon={faPenToSquare}
+                                        /></a>
+                                </td>
+                                <td>
+                                    <a href="/appointment_invoice/" onClick={() => navigateToInvoice(item)}>
+                                        <FontAwesomeIcon
+                                            icon={faFileInvoiceDollar}
+                                        /></a>
+                                </td>
+                                <td><a onClick={e => handleClick(e, item.id)}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
+                                    <FontAwesomeIcon
+                                        icon={faTrashCan}
+                                    /></a>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+                <Button variant="dark" onClick={() => donwloadCSV()}>Download CSV <FontAwesomeIcon
+                    icon={faArrowDown}
+                /></Button>
+            </Container>
         ));
 }
 
