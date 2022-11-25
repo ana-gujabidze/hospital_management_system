@@ -1,13 +1,15 @@
-from django.urls import path
-
 from appointments.views import (
     AppointmentListView,
     AppointmentRegistrationView,
     AppointmentUpdateView,
     DoctorAppointmentListView,
+    DownloadAppointmentsCSVView,
+    DownloadSpecificDoctorAppointmentsCSVView,
+    DownloadSpecificPatientAppointmentsCSVView,
     PatientAppointmentListView,
     SpecificAppointmentView,
 )
+from django.urls import path
 
 app_name = "appointments"
 
@@ -41,5 +43,20 @@ urlpatterns = [
         "specific_appointment/<int:appointment_id>/",
         SpecificAppointmentView().as_view(),
         name="appointment-user",
+    ),
+    path(
+        "download_all_appointments/",
+        DownloadAppointmentsCSVView.as_view(),
+        name="download-all-appointments",
+    ),
+    path(
+        "download_patient_specific_appointments/",
+        DownloadSpecificPatientAppointmentsCSVView.as_view(),
+        name="download-patient-specific-appointments",
+    ),
+    path(
+        "download_doctor_specific_appointments/",
+        DownloadSpecificDoctorAppointmentsCSVView.as_view(),
+        name="download-doctor-specific-appointments",
     ),
 ]

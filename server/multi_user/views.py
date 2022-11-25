@@ -106,6 +106,7 @@ class CustomAuthToken(ObtainAuthToken):
             "id": user.pk,
             "user_type": user.user_type,
             "username": user.username,
+            "is_staff": user.is_staff,
         }
         return Response(
             {
@@ -296,7 +297,7 @@ class DownloadDoctorCSVView(generics.GenericAPIView):
             "department",
         )
         all_doctors_dataset = pd.DataFrame.from_dict(queryset_list)
-        all_doctors_dataset = all_patients_dataset.replace("\r?\n", " ", regex=True)
+        all_doctors_dataset = all_doctors_dataset.replace("\r?\n", " ", regex=True)
 
         buf = BytesIO()
         all_doctors_dataset.to_csv(buf, index=False)

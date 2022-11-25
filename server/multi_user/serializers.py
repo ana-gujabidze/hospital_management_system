@@ -1,8 +1,7 @@
 import datetime
 
-from rest_framework import serializers
-
 from multi_user.models import Administrator, Doctor, Patient, User
+from rest_framework import serializers
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,10 +12,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 class PatientRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={"input_type": "password"}, write_only=True)
-    match_password = serializers.CharField(style={"input_type": "password"}, write_only=True)
+    match_password = serializers.CharField(
+        style={"input_type": "password"}, write_only=True
+    )
     mobile = serializers.CharField(required=True)
     disease = serializers.CharField(required=True)
     symptoms = serializers.CharField(required=True)
+    status = serializers.BooleanField(required=False)
 
     class Meta:
         model = User
@@ -124,9 +126,7 @@ class DoctorRegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Password is incorrect.")
 
         user.set_password(password)
-        user.is_staff = (
-            False  # Superadmin will veirfy if account really belongs to doctor and change it to True from admin panel
-        )
+        user.is_staff = False  # Superadmin will veirfy if account really belongs to doctor and change it to True from admin panel
         user.user_type = User.UserType.DOCTOR
         user.save()
 
@@ -145,7 +145,9 @@ class DoctorRegistrationSerializer(serializers.ModelSerializer):
 
 class AdministratorRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={"input_type": "password"}, write_only=True)
-    match_password = serializers.CharField(style={"input_type": "password"}, write_only=True)
+    match_password = serializers.CharField(
+        style={"input_type": "password"}, write_only=True
+    )
 
     class Meta:
         model = User
@@ -182,9 +184,7 @@ class AdministratorRegistrationSerializer(serializers.ModelSerializer):
 
         user.set_password(password)
         user.is_stuff = True
-        user.is_admin = (
-            False  # Superadmin will veirfy if account really belongs to doctor and change it to True from admin panel
-        )
+        user.is_admin = False  # Superadmin will veirfy if account really belongs to doctor and change it to True from admin panel
         user.user_type = User.UserType.ADMINISTRATOR
         user.save()
 
@@ -223,11 +223,21 @@ class DoctorUpdateSerializer(serializers.ModelSerializer):
     def save(self, request, *args, **kwargs):
         doctor = Doctor.objects.get(id=request.data.get("doctor_id"))
 
-        doctor.address = request.data.get("address", "") if request.data.get("address", "") else doctor.address
-        doctor.department = (
-            request.data.get("department", "") if request.data.get("department", "") else doctor.department
+        doctor.address = (
+            request.data.get("address", "")
+            if request.data.get("address", "")
+            else doctor.address
         )
-        doctor.mobile = request.data.get("mobile", "") if request.data.get("mobile", "") else doctor.mobile
+        doctor.department = (
+            request.data.get("department", "")
+            if request.data.get("department", "")
+            else doctor.department
+        )
+        doctor.mobile = (
+            request.data.get("mobile", "")
+            if request.data.get("mobile", "")
+            else doctor.mobile
+        )
 
         doctor.save()
 
@@ -273,15 +283,37 @@ class PatientUpdateSerializer(serializers.ModelSerializer):
     def save(self, request, *args, **kwargs):
         patient = Patient.objects.get(id=request.data.get("patient_id"))
 
-        patient.disease = request.data.get("disease", "") if request.data.get("disease", "") else patient.disease
-        patient.symptoms = request.data.get("symptoms", "") if request.data.get("symptoms", "") else patient.symptoms
-        patient.mobile = request.data.get("mobile", "") if request.data.get("mobile", "") else patient.mobile
-        patient.days_spent = (
-            request.data.get("days_spent", None) if request.data.get("days_spent", None) else patient.days_spent
+        patient.disease = (
+            request.data.get("disease", "")
+            if request.data.get("disease", "")
+            else patient.disease
         )
-        patient.released_at = request.data.get("release_at") if request.data.get("release_at") else patient.released_at
+        patient.symptoms = (
+            request.data.get("symptoms", "")
+            if request.data.get("symptoms", "")
+            else patient.symptoms
+        )
+        patient.mobile = (
+            request.data.get("mobile", "")
+            if request.data.get("mobile", "")
+            else patient.mobile
+        )
+        patient.days_spent = (
+            request.data.get("days_spent", None)
+            if request.data.get("days_spent", None)
+            else patient.days_spent
+        )
+        patient.released_at = (
+            request.data.get("release_at")
+            if request.data.get("release_at")
+            else patient.released_at
+        )
         patient.status = (
-            True if request.data.get("status") == "true" else False if request.data.get("status") else patient.status
+            True
+            if request.data.get("status") == "true"
+            else False
+            if request.data.get("status")
+            else patient.status
         )
 
         patient.save()

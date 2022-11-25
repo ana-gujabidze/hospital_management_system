@@ -6,6 +6,7 @@ from multi_user.views import (
     DoctorOnlyView,
     DoctorRegistrationView,
     DoctorUpdateView,
+    DownloadDoctorCSVView,
     DownloadPalientCSVView,
     LastFewDoctorListView,
     LastFewPatientListView,
@@ -106,5 +107,10 @@ urlpatterns = [
         "download_all_patients/",
         DownloadPalientCSVView.as_view(),
         name="download-all-patients",
+    ),
+    path(
+        "download_all_doctors/",
+        DownloadDoctorCSVView.as_view(),
+        name="download-all-doctors",
     ),
 ]

@@ -1,8 +1,12 @@
+from io import BytesIO
+
+import pandas as pd
 from appointments.models import Appointment
 from bills.models import Bill
 from bills.serializers import BillRegistrationSerializer
 from django.db.models import F, Sum
 from django.forms.models import model_to_dict
+from django.http import HttpResponse
 from django.shortcuts import render
 from multi_user.permissions import ISAdministrator, IsDoctor, IsPatient
 from rest_framework import generics, permissions
@@ -60,4 +64,60 @@ class SpecificPatientTotalBillView(generics.GenericAPIView):
                 "number_of_items": queryset.count(),
                 "amount_due": amount_due,
             }
+        )
+
+
+class DownloadBillsCSVView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated & ISAdministrator]
+
+    def get(self, request, *args, **kwargs):
+        queryset = Bill.objects.all().annotate(
+            doctor_name=F("appointment__doctor__full_name"),
+        )
+        queryset_list = queryset.values(
+            "doctor_name",
+            "room_charge",
+            "doctor_fee",
+            "medicine_cost",
+            "other_charge",
+        )
+        all_bills_dataset = pd.DataFrame.from_dict(queryset_list)
+        all_bills_dataset = all_bills_dataset.replace("\r?\n", " ", regex=True)
+
+        buf = BytesIO()
+        all_bills_dataset.to_csv(buf, index=False)
+        buf.seek(0)
+
+        return HttpResponse(
+            buf.getvalue(),
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="all_bills_dataset"'},
+        )
+
+
+class DownloadSpecificPatientBillsCSVView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated & (ISAdministrator | IsPatient)]
+
+    def get(self, request, patient_id, *args, **kwargs):
+        queryset = Bill.objects.filter(appointment__patient__id=patient_id).annotate(
+            doctor_name=F("appointment__doctor__full_name"),
+        )
+        queryset_list = queryset.values(
+            "doctor_name",
+            "room_charge",
+            "doctor_fee",
+            "medicine_cost",
+            "other_charge",
+        )
+        all_bills_dataset = pd.DataFrame.from_dict(queryset_list)
+        all_bills_dataset = all_bills_dataset.replace("\r?\n", " ", regex=True)
+
+        buf = BytesIO()
+        all_bills_dataset.to_csv(buf, index=False)
+        buf.seek(0)
+
+        return HttpResponse(
+            buf.getvalue(),
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="my_bills_dataset"'},
         )
