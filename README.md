@@ -45,7 +45,7 @@ Django REST Framework + React web application allows to:
 
 Example of homepage before user signs in
 
-![homepage](__screenshots\homepage_before_login.png?raw=true "Home Page")
+![homepage](__screenshots\homepage_before_login.png "Home Page")
 
 ---
 
@@ -71,6 +71,8 @@ Clone the repo and install the dependencies.
 git clone https://github.com/ana-gujabidze/hospital_management_system.git
 cd hospital_management_system/
 ```
+
+Download Docker Desktop from [the official website](https://docs.docker.com/desktop/). It will automatically install docker compose for you.
 
 Create `.env` file similar to `.env_sample` file and specify all environmental variables for server sides.
 
@@ -124,3 +126,31 @@ Administrator can update certain fields of patient's profile:
 Administrator can discharge user as well and as a result generate invoice:
 
 ![patients_invoice](__screenshots/patient_bills.png?raw=true "Patient's Invoice")
+
+There is also Swagger UI available for API testing:
+
+![swagger_ui](__screenshots/swagger_ui.png?raw=true "Swagger UI")
+
+Super users and administrators after getting grant from super users have access to admin panel:
+
+![admin_panel](__screenshots/admin_panel.png?raw=true "Admin Panel")
+
+---
+
+### Build Images and Run Containers With Docker Client
+
+Navigate to the source directory and from there run command in order to build the image
+
+```bash
+docker build -t django-app .
+```
+
+After successful build, run the container by the command
+
+```bash
+docker run -it -p 8000:8000 --env-file .env django-app
+```
+
+After running Django app image, in CLI server URL should appear, after following it, the result should be the following:
+
+![homepage](__screenshots\homepage_before_login.png "Title")
