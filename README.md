@@ -45,7 +45,7 @@ Django REST Framework + React web application allows to:
 
 Example of homepage before user signs in
 
-![homepage](__screenshots\homepage_before_login.png "Home Page")
+![homepage](__screenshots\homepage_before_login.png?raw=True "Home Page")
 
 ---
 
@@ -153,4 +153,4 @@ docker run -it -p 8000:8000 --env-file .env django-app
 
 After running Django app image, in CLI server URL should appear, after following it, the result should be the following:
 
-![homepage](__screenshots\homepage_before_login.png "Title")
+![homepage](__screenshots\homepage_before_login.png?raw=True "Title")
